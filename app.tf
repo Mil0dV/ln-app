@@ -9,8 +9,7 @@
 #    name = "ubuntu:latest"
 #}
 
-
-resource "aws_instance" "example" {
-    ami = "ami-96c41ce1"
+/*resource "aws_instance" "ln-app" {
+    ami = "${lookup(var.amis, var.region)}"
     instance_type = "t2.micro"
-}
+}*/
