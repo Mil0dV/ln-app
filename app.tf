@@ -1,14 +1,4 @@
-# Create a container
-# resource "docker_container" "foo" {
-#    image = "${docker_image.ubuntu.latest}"
-#    name = "foo"
-#    must_run = "true"
-#}
-
-#resource "docker_image" "ubuntu" {
-#    name = "ubuntu:latest"
-#}
-
+# Creates an AWS instance with Docker + the LN app
 resource "aws_instance" "ln-app" {
   ami = "${lookup(var.amis, var.region)}"
   instance_type = "t2.micro"
@@ -23,14 +13,20 @@ resource "aws_instance" "ln-app" {
     user = "ubuntu"
     key_file = "deploy-key"
   }
+  provisioner "file" {
+    source = "app/Dockerfile"
+    destination = "/opt/ln-docker"
+  }
   provisioner "remote-exec" {
     inline = [
       /* Install docker */
       "curl -sSL https://get.docker.com/ubuntu/ | sudo sh",
-      /* Initialize ruby container */
-      "sudo docker run --name ln-app ruby:slim"
-      /* TODO: provide Redis IP */
-      /*${aws_instance.nat.public_ip}"*/
+      /* Provide Redis IP to app */
+      "echo ${aws_instance.ln-redis.public_ip} > redis_host",
+      "cat redis_host",
+      /* Build container */
+      "cd /opt/ln-docker && sudo docker build -t lame/app .",
+      "sudo docker run --name ln-app -t -i lame/app"
     ]
   }
 }
