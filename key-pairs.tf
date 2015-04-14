@@ -1,4 +1,4 @@
-resource "aws_key_pair" "deployer" {
-  key_name = "deploy-key"
+resource "digitalocean_ssh_key" "deployer" {
+  name = "deploy-key"
   public_key = "${file(\"deploy-key.pub\")}"
 }

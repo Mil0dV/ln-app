@@ -1,5 +1,4 @@
 
-
 Fill terraform.tfvars.sample with AWS keys and management IPs/subnets (CIDR notation) and save as terraform.tfvars
 
 Create SSH key to be used for provisioning:

@@ -3,9 +3,13 @@
 #    host = "tcp://192.168.59.103:2376/"
 #}
 
-variable "access_key" {}
-variable "secret_key" {}
 variable "mgt_subnets" {}
+
+variable "do_token" {}
+
+provider "digitalocean" {
+    token = "${var.do_token}"
+}
 
 variable "region"     {
   description = "AWS region to host your network"
@@ -13,8 +17,8 @@ variable "region"     {
 }
 
 variable "vpc_cidr" {
-    description = "CIDR for the VPC"
-    default = "10.0.0.0/16"
+  description = "CIDR for the VPC"
+  default = "10.0.0.0/16"
 }
 
 variable "public_subnet_cidr" {
@@ -23,8 +27,8 @@ variable "public_subnet_cidr" {
 }
 
 variable "amis" {
-    description = "Ubuntu 14.04 AMI as starting point"
-    default = {
-      eu-west-1 = "ami-96c41ce1"
+  description = "Ubuntu 14.04 AMI as starting point"
+  default = {
+    eu-west-1 = "ami-96c41ce1"
   }
 }
