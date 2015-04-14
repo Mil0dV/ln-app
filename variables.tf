@@ -3,6 +3,10 @@
 #    host = "tcp://192.168.59.103:2376/"
 #}
 
+variable "access_key" {}
+variable "secret_key" {}
+variable "mgt_subnets" {}
+
 variable "region"     {
   description = "AWS region to host your network"
   default     = "eu-west-1"
