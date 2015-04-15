@@ -6,7 +6,7 @@ FROM debian:latest
 ENV DEBIAN_FRONTEND noninteractive
 
 # install dependencies
-RUN apt-get update && apt-get -y install --no-install-recommends \
+RUN apt-get update && apt-get -qy install --no-install-recommends \
     build-essential \
     curl \
     ca-certificates \
@@ -23,7 +23,7 @@ RUN cd lamernews && gem install --no-ri --no-rdoc bundler passenger && bundle in
 
 # Set Redis IP
 COPY redis_host /
-# RUN sed -i -e 's/127.0.0.1:10000/`cat redis_host`:6379/' lamernews/app_config.rb
+RUN sed -i -e "s/127.0.0.1:10000/$(cat redis_host):6379/" lamernews/app_config.rb
 
 # CMD cd lamernews && bundle exec rackup -p8080 --host 0.0.0.0
 CMD cd lamernews && passenger start --port 8080
