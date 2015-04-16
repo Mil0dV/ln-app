@@ -7,6 +7,8 @@ variable "mgt_subnets" {}
 
 variable "do_token" {}
 
+variable "redis_pwd"{}
+
 provider "digitalocean" {
     token = "${var.do_token}"
 }

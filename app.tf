@@ -22,11 +22,12 @@ resource "digitalocean_droplet" "ln-app" {
   }
   provisioner "remote-exec" {
     inline = [
-      /* Install docker */
+      /* Install docker 1.4 for remote connections on 14.04 */
       "sudo apt-get update && apt-get -qy install docker.io",
-      /* Provide Redis IP to app */
-      "cd /opt/ln-docker && echo ${digitalocean_droplet.ln-redis.ipv4_address_private} > redis_host",
-      /* Build container */
+      /* Provide Redis pass and IP to app */
+      "cd /opt/ln-docker",
+      "echo :${var.redis_pwd}@${digitalocean_droplet.ln-redis.ipv4_address_private} > redis_host",
+      /* Build and run container */
       "sudo docker build -t lame/app .",
       "sudo docker run -d -p=80:8080 --name ln-app -t -i lame/app"
     ]
