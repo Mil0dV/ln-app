@@ -14,23 +14,6 @@ provider "digitalocean" {
 }
 
 variable "region"     {
-  description = "AWS region to host your network"
-  default     = "eu-west-1"
-}
-
-variable "vpc_cidr" {
-  description = "CIDR for the VPC"
-  default = "10.0.0.0/16"
-}
-
-variable "public_subnet_cidr" {
-  description = "CIDR for public subnet"
-  default     = "10.0.0.0/24"
-}
-
-variable "amis" {
-  description = "Ubuntu 14.04 AMI as starting point"
-  default = {
-    eu-west-1 = "ami-96c41ce1"
-  }
+  description = "DO region to host your network"
+  default     = "AMS3"
 }

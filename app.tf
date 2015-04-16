@@ -1,8 +1,9 @@
 # Creates a DO instance with Docker + the LN app
 resource "digitalocean_droplet" "ln-app" {
+  count = 2
   image = "ubuntu-14-04-x64"
-  name = "ln-app"
-  region = "ams3"
+  name = "ln-app${count.index+1}"
+  region = "${var.region}"
   size = "512mb"
   private_networking = "true"
   ssh_keys = [ "${digitalocean_ssh_key.deployer.fingerprint}" ]
@@ -12,7 +13,7 @@ resource "digitalocean_droplet" "ln-app" {
   }
   provisioner "remote-exec" {
     inline = [
-    /* Create dir */
+    # Create dir
     "sudo mkdir -p /opt/ln-docker"
     ]
   }
@@ -22,12 +23,12 @@ resource "digitalocean_droplet" "ln-app" {
   }
   provisioner "remote-exec" {
     inline = [
-      /* Install docker 1.4 for remote connections on 14.04 */
+      # Install docker 1.4 for remote connections on 14.04
       "sudo apt-get update && apt-get -qy install docker.io",
-      /* Provide Redis pass and IP to app */
+      # Provide Redis pass and IP to app
       "cd /opt/ln-docker",
       "echo :${var.redis_pwd}@${digitalocean_droplet.ln-redis.ipv4_address_private} > redis_host",
-      /* Build and run container */
+      # Build and run container
       "sudo docker build -t lame/app .",
       "sudo docker run -d -p=80:8080 --name ln-app -t -i lame/app"
     ]
