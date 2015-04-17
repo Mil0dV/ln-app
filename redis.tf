@@ -18,8 +18,7 @@ resource "digitalocean_droplet" "ln-redis" {
 
   provisioner "remote-exec" {
     inline = [
-      # Install docker 1.4 for remote connections on 14.04
-      /*"sudo apt-get update && apt-get -qy install docker.io",*/
+      # Install docker
       "curl -sSL https://get.docker.com/ubuntu/ | sudo sh",
       # set Redis pw
       "cd /opt/redis && sudo sed -i -e 's/foobared/${var.redis_pwd}/' redis.conf",

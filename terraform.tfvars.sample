@@ -1,3 +1,2 @@
 do_token = "1234"
-mgt_subnets = "12.34.56.78/32"
 redis_pwd = "hunter2"
