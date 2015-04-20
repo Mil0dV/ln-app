@@ -3,8 +3,6 @@
 #    host = "tcp://192.168.59.103:2376/"
 #}
 
-variable "mgt_subnets" {}
-
 variable "do_token" {}
 
 variable "redis_pwd"{}
