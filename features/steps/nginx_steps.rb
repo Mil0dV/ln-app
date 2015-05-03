@@ -1,5 +1,5 @@
 Given(/^my server is available$/) do
-  output=`vagrant reload`
+  output=`vagrant up`
 end
 
 And(/^I provision it$/) do
