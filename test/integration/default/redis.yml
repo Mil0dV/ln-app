@@ -1,5 +1,0 @@
-  ---
-  - name: wrapper playbook for kitchen testing "redis"
-    hosts: localhost
-    roles:
-      - redis
