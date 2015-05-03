@@ -1,12 +1,12 @@
-Given(/^my server is available$/) do
-  output=`vagrant up`
+Given(/^my nginx server is available$/) do
+  output=`vagrant up app1`
 end
 
-And(/^I provision it$/) do
-  output=`vagrant provision`
+And(/^I provision the nginx server$/) do
+  output=`vagrant provision app1`
 end
 
-When(/^I get access to it$/) do
+When(/^I get access to the nginx server$/) do
   run_remote("ls")
 end
 
@@ -15,5 +15,5 @@ Then(/^I expect it to have nginx running$/) do
 end
 
 def run_remote(command)
-  `vagrant ssh app1 #{command}`
+  `vagrant ssh app1 -c "#{command}"`
 end
