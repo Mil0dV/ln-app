@@ -1,18 +1,20 @@
 ---
 driver:
-  name: vagrant
+  name: docker
 
 provisioner:
   name: ansible_playbook
+  ansible_version: 1.9.0.1-1ppa~trusty
 
   roles_path: roles
   hosts: hosts/hosts_dev
   ansible_verbose: true
 
 platforms:
-  - name: ubuntu-14.04
+  - name: ubuntu
     driver_config:
-      box: svlasov/ubuntu-trusty64-ansible
+      image: ansible/ubuntu14.04-ansible:stable
+      require_chef_omnibus: false
 
 suites:
   - name: redis

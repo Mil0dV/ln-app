@@ -6,3 +6,4 @@ gem 'ansible_spec'
 gem 'test-kitchen'
 gem "kitchen-vagrant"
 gem "kitchen-ansible"
+gem "kitchen-docker"
