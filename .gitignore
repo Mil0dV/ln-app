@@ -1,5 +1,2 @@
-terraform.tfvars
-terraform.tfstate
-terraform.tfstate.backup
-deploy-key
-deploy-key.pub
+Gemfile.lock
+.vagrant/

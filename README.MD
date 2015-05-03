@@ -1,16 +1,26 @@
-## Terraform setup for Lamernews
+## Infrastructure setup for Lamernews
 
 This project aims to build an infrastructure for [lamernews](https://github.com/antirez/lamernews/). Here's how:
 
 
 ####Setup
-Install Terraform via cli or [terraform.io](https://terraform.io/downloads.html):  
 
-```#{package_manager} install terraform```  
+Install Ansible via cli
+```#{package_manager} install ansible```  
 
 If necessary, create a Digital Ocean account. An api token (Personal Access Token) can be generated here: [https://cloud.digitalocean.com/settings/applications](https://cloud.digitalocean.com/settings/applications)
 
-Fill 'terraform.tfvars.sample' with DO api token and Redis password and save as 'terraform.tfvars'
+Fill 'XXXXXXXX.sample' with DO api token and Redis password and save as 'XXXXXXX'
+
+#### Local testing with Vagrant
+
+Create & start boxes with
+``vagrant up``
+
+Run testsuite with
+``rake rake serverspec:LN-inf-2.0``
+
+# todo
 
 Create SSH key to be used for provisioning:
 
