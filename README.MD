@@ -17,8 +17,10 @@ Fill 'XXXXXXXX.sample' with DO api token and Redis password and save as 'XXXXXXX
 Create & start boxes with
 ``vagrant up``
 
-Run testsuite with
-``rake rake serverspec:LN-inf-2.0``
+Run app tests with
+``rake serverspec:LN-inf-app``
+Redis tests:
+``rake serverspec:LN-inf-redis``
 
 # todo
 

@@ -1,0 +1,15 @@
+---
+- name: LN-inf-redis
+
+  hosts: redis1
+  user: vagrant
+  sudo: yes
+  roles:
+    - redis
+
+- name: LN-inf-app
+  hosts: app1
+  user: vagrant
+  sudo: yes
+  roles:
+    - passenger

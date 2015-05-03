@@ -1,9 +1,0 @@
----
-- name: LN-inf-2.0
-  hosts: redis1
-  user: vagrant
-  sudo: yes
-  roles:
-    - redis
-    # - nginx
-    # - mariadb

@@ -1,7 +1,7 @@
 
 ---
 
-- name: Create a {{ application_name }} virtual machine via vagrant
+- name: Create a {{ application_name }} Redis virtual machine via vagrant
   hosts: redis1
   sudo: yes
   sudo_user: root
@@ -14,3 +14,17 @@
 
   roles:
     - redis
+
+- name: Create a {{ application_name }} app virtual machine via vagrant
+  hosts: app1
+  sudo: yes
+  sudo_user: root
+  remote_user: vagrant
+
+  vars_files:
+    - env_vars/base.yml
+    # todo
+    #- env_vars/vagrant.yml
+
+  roles:
+    - passenger

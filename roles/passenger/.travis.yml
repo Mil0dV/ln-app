@@ -1,0 +1,57 @@
+---
+language: python
+python: "2.7"
+
+env:
+  - SITE=test.yml
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y curl
+
+  # Remove ruby entirely.
+  - sudo apt-get remove --purge 'ruby*'
+  - sudo apt-get autoremove
+  - sudo apt-get autoclean
+
+install:
+  # Install Ansible.
+  - pip install ansible
+
+  # Add ansible.cfg to pick up roles path.
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+
+  # Install required dependencies.
+  - ansible-galaxy install geerlingguy.ruby geerlingguy.nodejs
+
+script:
+  # Check the role/playbook's syntax.
+  - "ansible-playbook -i tests/inventory tests/$SITE --syntax-check"
+
+  # Run the role/playbook with ansible-playbook.
+  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo"
+
+  # Comment idempotence test for now; everything seems to work correctly, and
+  # the only reason things aren't idempotent stems from the Travis environment.
+  # Run the role/playbook again, checking to make sure it's idempotent.
+  # - >
+  #   ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
+  #   | grep -q 'changed=0.*failed=0'
+  #   && (echo 'Idempotence test: pass' && exit 0)
+  #   || (echo 'Idempotence test: fail' && exit 1)
+  # Just run the playbook again for debugging purposes.
+  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo"
+
+  # Request the rails demo app homepage.
+  - "curl http://localhost/"
+
+after_failure:
+  # If we failed, it's likely due to Travis environment changes.
+  - which ruby
+  - which -a ruby
+  - ruby --version
+  - which rails
+  - sudo which ruby
+  - sudo which -a ruby
+  - sudo ruby --version
+  - sudo which rails

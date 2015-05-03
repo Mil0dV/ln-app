@@ -11,12 +11,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.define "redis1"
-  config.vm.network :private_network, ip: "192.168.33.15"
+  # config.vm.define "redis1"
+  # config.vm.network :private_network, ip: "192.168.33.15"
 
-  config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--name", "MyCoolApp", "--memory", "512"]
+  {
+    # 'db1'    => '192.168.33.10',
+    'app1'   => '192.168.33.21',
+    'redis1' => '192.168.33.15',
+  }.each do |short_name, ip|
+    config.vm.define short_name do |host|
+      host.vm.network 'private_network', ip: ip
+      host.vm.hostname = "#{short_name}.myapp.dev"
+    end
   end
+  # 
+  # config.vm.provider :virtualbox do |vb|
+  #   vb.customize ["modifyvm", :id, "--name", "MyCoolApp", "--memory", "512"]
+  # end
 
   # Shared folder from the host machine to the guest machine. Uncomment the line
   # below to enable it.
@@ -29,15 +40,3 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.verbose = "v"
   end
 end
-
-
-# {
-#   'db1'    => '192.168.33.10',
-#   # 'app1'   => '192.168.33.11',
-#   'redis1' => '192.168.33.12',
-# }.each do |short_name, ip|
-#   config.vm.define short_name do |host|
-#     host.vm.network 'private_network', ip: ip
-#     host.vm.hostname = "#{short_name}.myapp.dev"
-#   end
-# end
