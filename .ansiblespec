@@ -1,4 +1,4 @@
 ---
 -
   playbook: playbook.yml
-  inventory: hosts/hosts_dev
+  inventory: hosts/dev

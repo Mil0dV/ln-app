@@ -24,7 +24,7 @@
   vars_files:
     - env_vars/base.yml
     # todo
-    #- env_vars/vagrant.yml
+    - env_vars/dev.vars.yml
 
   roles:
     - passenger

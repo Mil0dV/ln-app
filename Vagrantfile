@@ -21,10 +21,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
       host.vm.network 'private_network', ip: ip
-      host.vm.hostname = "#{short_name}.myapp.dev"
+      host.vm.hostname = "#{short_name}.dev"
     end
   end
-  # 
+  #
   # config.vm.provider :virtualbox do |vb|
   #   vb.customize ["modifyvm", :id, "--name", "MyCoolApp", "--memory", "512"]
   # end

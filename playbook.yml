@@ -1,6 +1,5 @@
 ---
 - name: LN-inf-redis
-
   hosts: redis1
   user: vagrant
   sudo: yes
