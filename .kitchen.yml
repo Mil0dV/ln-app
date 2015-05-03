@@ -1,0 +1,21 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: ansible_playbook
+
+  roles_path: roles
+  hosts: hosts/hosts_dev
+  ansible_verbose: true
+
+platforms:
+  - name: ubuntu-14.04
+    driver_config:
+      box: svlasov/ubuntu-trusty64-ansible
+
+suites:
+  - name: redis
+    provisioner:
+      playbook: redis.yml
+      hosts: redis1
