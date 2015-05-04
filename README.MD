@@ -14,6 +14,9 @@ Fill 'XXXXXXXX.sample' with DO api token and Redis password and save as 'XXXXXXX
 
 #### Local testing with Vagrant
 
+Install gemset
+``bundle install``
+
 Create & start boxes with
 ``vagrant up``
 
@@ -21,6 +24,9 @@ Run app tests with
 ``rake serverspec:LN-inf-app``
 Redis tests:
 ``rake serverspec:LN-inf-redis``
+
+Cucumber feature tests:
+``rake features``
 
 # todo
 

@@ -1,19 +1,15 @@
 Given(/^my nginx server is available$/) do
-  output=`vagrant up app1`
+  run_simple("vagrant up #{ENV['APP_HOST']}", true, 120)
 end
 
 And(/^I provision the nginx server$/) do
-  output=`vagrant provision app1`
+  run_simple("vagrant provision #{ENV['APP_HOST']}", true, 120)
 end
 
 When(/^I get access to the nginx server$/) do
-  run_remote("ls")
+  run_remote("#{ENV['APP_HOST']}", "ls")
 end
 
 Then(/^I expect it to have nginx running$/) do
-  run_remote("ps aux | grep nginx")
-end
-
-def run_remote(command)
-  `vagrant ssh app1 -c "#{command}"`
+  run_remote("#{ENV['APP_HOST']}", "service nginx status")
 end

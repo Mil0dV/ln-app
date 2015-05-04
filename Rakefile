@@ -3,6 +3,10 @@ require 'rake'
 require 'rspec/core/rake_task'
 require 'yaml'
 require 'ansible_spec'
+require 'cucumber/rake/task'
+require 'dotenv'
+
+Dotenv.load File.absolute_path('.env')
 
 properties = AnsibleSpec.get_properties
 # {"name"=>"Ansible-Sample-TDD", "hosts"=>["192.168.0.103","192.168.0.103"], "user"=>"root", "roles"=>["nginx", "mariadb"]}
@@ -32,4 +36,8 @@ namespace :serverspec do
       end
     end
   end
+end
+
+Cucumber::Rake::Task.new(:features) do |t|
+  t.cucumber_opts = "--format pretty" # Any valid command line option can go here.
 end
