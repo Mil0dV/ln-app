@@ -1,4 +1,7 @@
 ---
+- name: LN-inf-2.0
+  hosts: all
+
 - name: LN-inf-redis
   hosts: redis1
   user: vagrant

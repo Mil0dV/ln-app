@@ -14,6 +14,10 @@ properties = AnsibleSpec.get_properties
 
 namespace :serverspec do
   properties.each do |property|
+    if property["hosts"] == 'all'
+      next
+    end
+
     property["hosts"].each do |host|
       desc "Run serverspec for #{property["name"]}"
       RSpec::Core::RakeTask.new(property["name"].to_sym) do |t|
