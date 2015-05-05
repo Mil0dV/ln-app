@@ -3,7 +3,7 @@ Given(/^my app server is available$/) do
 end
 
 Given(/^I provision the app server$/) do
-  run_simple("vagrant provision #{ENV['APP_HOST']}", true, 120)
+  run_simple("ansible-playbook -i hosts/dev app-playbook.yml", true, 120)
 end
 
 When(/^I get access to the app server$/) do

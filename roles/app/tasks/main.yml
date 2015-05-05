@@ -9,3 +9,5 @@
     image: unittbot/ln-app:{{ app_version }}
     state: started
     ports: "0.0.0.0:80:8080"
+    env:
+      ENVVAR_REDIS_URL: "{{ redismaster_ip }}"

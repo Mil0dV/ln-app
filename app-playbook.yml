@@ -7,15 +7,10 @@
     - name: Collect DB Master IP
       set_fact: redismaster_ip="{{ hostvars["redis-master"].ansible_eth1.ipv4.address}}"
 
-- name: LN-inf-redis
-  hosts: redis
-  user: root
-  roles:
-    - redis
-
 - name: LN-inf-app
   hosts: app
   user: root
+  # sudo: yes
   roles:
     - docker
     - app

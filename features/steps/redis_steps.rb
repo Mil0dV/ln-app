@@ -3,7 +3,7 @@ Given(/^my redis server is available$/) do
 end
 
 And(/^I provision the redis server$/) do
-  run_simple("vagrant provision #{ENV['REDIS_HOST']}", true, 120)
+  run_simple("ansible-playbook -i hosts/dev redis-playbook.yml", true, 120)
 end
 
 When(/^I get access to the redis server$/) do

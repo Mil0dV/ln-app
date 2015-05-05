@@ -14,7 +14,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   {
     # 'db1'    => '192.168.33.10',
     'app1'   => '192.168.33.21',
-    'redis1' => '192.168.33.15',
+    'app2'   => '192.168.33.22',
+    'redis-master' => '192.168.33.14'
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
       host.vm.network 'private_network', ip: ip
@@ -23,17 +24,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   #
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "256"]
+    vb.customize ["modifyvm", :id, "--memory", "320"]
   end
 
   # Shared folder from the host machine to the guest machine. Uncomment the line
   # below to enable it.
   #config.vm.synced_folder "../../../my-cool-app", "/webapps/mycoolapp/my-cool-app"
 
-  # Ansible provisioner.
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "playbook.yml"
-    ansible.host_key_checking = false
-    ansible.verbose = "v"
-  end
+  # # Ansible provisioner.
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.playbook = "playbook.yml"
+  #   ansible.inventory_path = "hosts/dev"
+  #   ansible.limit = 'all'
+  #   # ansible_ssh_user = 'root'
+  #   # ansible.ssh_private_key_file = "~/.ssh/id_rsa.pub"
+  #   ansible.host_key_checking = false
+  #   ansible.verbose = "v"
+  # end
 end
