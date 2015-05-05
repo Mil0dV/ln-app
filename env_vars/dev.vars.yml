@@ -1,2 +1,0 @@
----
-  passenger_server_name: "{{ application_name }}.dev"

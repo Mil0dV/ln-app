@@ -1,0 +1,11 @@
+---
+
+- name: Wait on Redis
+  wait_for: port=6379 host={{ redismaster_ip }}
+
+- name: Run Docker container
+  docker:
+    name: ln-app
+    image: unittbot/ln-app:{{ app_version }}
+    state: started
+    ports: "0.0.0.0:80:8080"

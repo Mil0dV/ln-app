@@ -23,10 +23,3 @@
 
 - name: Install docker-py
   pip: name=docker-py version=0.6.0
-
-- name: Run Docker container
-  docker:
-    name: ln-app
-    image: unittbot/ln-app:v0.1
-    state: started
-    ports: "0.0.0.0:80:8080"

@@ -22,9 +22,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
   #
-  # config.vm.provider :virtualbox do |vb|
-  #   vb.customize ["modifyvm", :id, "--name", "MyCoolApp", "--memory", "512"]
-  # end
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "256"]
+  end
 
   # Shared folder from the host machine to the guest machine. Uncomment the line
   # below to enable it.
@@ -32,7 +32,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Ansible provisioner.
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "vagrant.yml"
+    ansible.playbook = "playbook.yml"
     ansible.host_key_checking = false
     ansible.verbose = "v"
   end

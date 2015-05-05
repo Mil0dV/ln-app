@@ -1,8 +1,18 @@
 
 ---
 
+- name: LN-inf-2.0
+  hosts: all
+  tasks:
+    - name: Load env vars
+      include_vars: env_vars/base.yml
+    - debug: msg="{{ hostvars[inventory_hostname].ansible_default_ipv4.address }} {{ hostvars[inventory_hostname]["ansible_fqdn"] }} {{ hostvars[inventory_hostname]["ansible_hostname"] }}"
+    - name: Collect DB Master IP
+      set_fact: redismaster_ip="{{ hostvars["redis-master"].ansible_default_ipv4.address}}"
+
+
 - name: Create a {{ application_name }} Redis virtual machine via vagrant
-  hosts: redis1
+  hosts: redis
   sudo: yes
   sudo_user: root
   remote_user: vagrant
@@ -23,8 +33,7 @@
 
   vars_files:
     - env_vars/base.yml
-    # todo
-    - env_vars/dev.vars.yml
 
   roles:
     - docker
+    - app
