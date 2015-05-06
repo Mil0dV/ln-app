@@ -1,0 +1,27 @@
+---
+- name: LN-inf-2.0
+  hosts: all
+  tasks:
+    - name: Load env vars
+      include_vars: env_vars/base.yml
+    - name: Collect DB Master IP
+      set_fact: redismaster_ip="{{ hostvars["redis-master"].ansible_eth1.ipv4.address}}"
+
+- name: LN-inf-redis
+  hosts: redis
+  user: root
+  roles:
+    - redis
+
+- name: LN-inf-app
+  hosts: app
+  user: root
+  roles:
+    - docker
+    - app
+
+- name: LN-inf-lb
+  hosts: lb
+  user: root
+  roles:
+    - lb

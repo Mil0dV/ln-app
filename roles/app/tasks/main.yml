@@ -1,0 +1,13 @@
+---
+
+- name: Wait on Redis
+  wait_for: port=6379 host={{ redismaster_ip }}
+
+- name: Run Docker container
+  docker:
+    name: ln-app
+    image: "{{ dockerhub_user }}/ln-app:{{ app_version }}"
+    state: reloaded
+    ports: "0.0.0.0:80:8080"
+    env:
+      ENVVAR_REDIS_URL: "{{ redismaster_ip }}"

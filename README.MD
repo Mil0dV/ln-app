@@ -1,36 +1,84 @@
-## Terraform setup for Lamernews
+## Infrastructure setup for Lamernews
 
 This project aims to build an infrastructure for [lamernews](https://github.com/antirez/lamernews/). Here's how:
 
+####Gotta go fast!
 
-####Setup
-Install Terraform via cli or [terraform.io](https://terraform.io/downloads.html):  
+Install Ansible, Vagrant and Virtualbox via cli
 
-```#{package_manager} install terraform```  
+```
+#{package_manager} install ansible  
+#{package_manager} install vagrant  
+#{package_manager} install virtualbox
+```
+(package names may vary depending on os)
+
+Install gemset  
+``bundle install``
+
+Create dev stack and run Cucumber features against them:  
+``rake features``
+
+####Additional dev stack features
+```
+rake ln:create_dev_stack      # Create and provision dev stack
+rake ln:deploy_dev            # Deploy new build to dev environment
+rake ln:destroy_dev_stack     # Destroy dev stack
+```
+
+####Setup for production on DO
+
+To deploy to Digital Ocean the following Vagrant plugins are necessary:
+```
+vagrant plugin install vagrant-digitalocean
+vagrant plugin install vai
+```
 
 If necessary, create a Digital Ocean account. An api token (Personal Access Token) can be generated here: [https://cloud.digitalocean.com/settings/applications](https://cloud.digitalocean.com/settings/applications)
 
-Fill 'terraform.tfvars.sample' with DO api token and Redis password and save as 'terraform.tfvars'
+Fill '.env.private.sample' with DO api token and save as '.env.private'
 
-Create SSH key to be used for provisioning:
+You've now unlocked:
+```
+rake ln:create_prod_stack     # Create and provision production stack
+rake ln:deploy_prod           # Deploy new build to production environment
+rake ln:destroy_prod_stack    # Destroy production stack
+```
 
-```ssh-keygen -t rsa -C "deploy-key" -P '' -f deploy-key```
+Lamersnews should now be up and running on the loadbalancers' public ip's:
 
-####Showtime  
-``$ terraform plan```
+``grep lb1 hosts/*``
 
-Check and inspect the output to see what it would do then when you are happy with it run:
+####Vagrant
 
-```$ terraform apply```
+Both environments are also usuable via vagrant, e.g.:
+```
+vagrant up app1
+vagrant ssh app1
+```
 
-After this has created the infrastructure you can view the status with:
+Hostnames are in hosts/dev and the dynamically generated hosts/vagrant_ansible_inventory. You can also ssh into the nodes:
 
-```$ terraform show```
+``$ ssh root@#{node_ip}``
 
-Lamersnews should be up and running on ln-lb's public ip.
+####Aditional testing (serverspec)
+Besides Cucumber there are also ServerSpecs implemented via ansible_spec. These can be run as follows:
 
-Connecting to a node can be done with:
+Run app tests with  
+``rake serverspec:LN-inf-app``  
+Redis tests:  
+``rake serverspec:LN-inf-redis``  
+Loadbalancer tests:  
+``rake serverspec:LN-inf-lb``  
 
-```$ ssh -i deploy_key root@#{instance_ip}```
+####Updating the app
+Updates are performed by first building a new docker image, for which you'l need to:  
+``docker login``  
+(requires dockerhub account)  
+And set your username in group_vars/all/dockerhub.
 
-*NB: this creates 4 droplets on DO, this will cost $0.028/hour. To prevent bankruptcy clean up with 'terraform destroy'*
+Then you can build with:  
+``rake ln:build``  
+and finally deploy:  
+``rake ln:deploy_dev  
+rake ln:deploy_prod``  

@@ -1,0 +1,24 @@
+---
+- name: Create working dir
+  file: path=/tmp/ln-app-docker state=directory
+
+- name: Create Dockerfile
+  template: src=Dockerfile.j2 dest=/tmp/ln-app-docker/Dockerfile
+
+- name: Copy the root files
+  synchronize: src=roles/app-docker-builder/files/root_fs dest=/tmp/ln-app-docker/ perms=yes recursive=yes
+
+- name: Check or build image (Debian)
+  docker_image: >
+    path="/tmp/ln-app-docker"
+    name="ln-app"
+    tag="{{ dockerhub_user }}/ln-app:{{ app_version }}"
+    state=build
+  when: ansible_os_family == "Debian"
+
+- name: Build image (Darwin)
+  command: docker build -rm -t {{ dockerhub_user }}/ln-app:{{ app_version }} /tmp/ln-app-docker
+  when: ansible_os_family == "Darwin"
+
+- name: Push docker image
+  command: docker push {{ dockerhub_user }}/ln-app

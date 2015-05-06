@@ -1,0 +1,25 @@
+---
+- name: Add docker key to keychain
+  apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=36A1D7869245C8950F966E92D8576A8BA88D21E9 state=present
+  when: ansible_os_family == "Debian"
+
+- name: Add docker to the apt sources
+  apt_repository: repo='deb https://get.docker.com/ubuntu docker main' state=present
+  when: ansible_os_family == "Debian"
+
+- name: Install docker (Debian)
+  apt: name="{{ item }}" state=present  update_cache=yes cache_valid_time=3600
+  with_items:
+      - lxc-docker
+      - python-pip
+  when: ansible_os_family == "Debian"
+
+- name: Install docker (RedHat)
+  yum: name="{{ item }}" state=present
+  with_items:
+      - docker-io
+      - python-pip
+  when: ansible_os_family == "RedHat"
+
+- name: Install docker-py
+  pip: name=docker-py version=0.6.0

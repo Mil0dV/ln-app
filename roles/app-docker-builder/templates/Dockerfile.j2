@@ -1,0 +1,23 @@
+# AUTHOR:         Milo de Vries <milo@xdh.nl
+# DESCRIPTION:    Ruby+Lamernews setup
+
+FROM debian:jessie
+
+ENV DEBIAN_FRONTEND noninteractive
+
+ADD     root_fs /
+#COPY ./deps+app.sh /
+RUN /deps+app.sh
+
+# Pull in app while juggling Gemfile
+RUN mv lamernews/Gemfile* . && \
+    rm -f lamernews/* && \
+    git clone https://github.com/antirez/lamernews.git && \
+    mv -f Gemfile* lamernews/
+
+# Set Redis URL
+RUN sed -i -e "s/127.0.0.1:10000/ENVVAR_REDIS_URL:6379/" lamernews/app_config.rb
+
+CMD /usr/local/bin/run.sh
+
+EXPOSE 8080

@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+require_relative './vagrant/key_authorization'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  authorize_key_for_root config, '~/.ssh/id_dsa.pub', '~/.ssh/id_rsa.pub'
+
+  config.vm.box = "digital_ocean"
+
+  [
+    'lb1p',
+    'app1p',
+    'app2p',
+    'redis-master-prod'
+  ].each do |short_name|
+    config.vm.define short_name
+    config.vm.provider :digital_ocean do |provider, override|
+      override.ssh.private_key_path = '~/.ssh/id_rsa'
+      override.vm.box = 'digital_ocean'
+      override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+      provider.token = "#{ENV['DO_API_TOKEN']}"
+      provider.image = "ubuntu-14-04-x64"
+      provider.private_networking = true
+      provider.region = "ams2"
+
+      config.vm.provision :vai do |ansible|
+        ansible.inventory_dir='hosts/'
+        ansible.groups = {
+          'app' => ['app1p','app2p'],
+          'redis' => ['redis-master-prod'],
+          'lb' => ['lb1p']
+        }
+      end
+    end
+  end
+end

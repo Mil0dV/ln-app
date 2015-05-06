@@ -1,5 +1,8 @@
-terraform.tfvars
-terraform.tfstate
-terraform.tfstate.backup
-deploy-key
-deploy-key.pub
+Gemfile.lock
+.vagrant/
+.kitchen/
+.kitchen.local.yml
+ln-app-docker-tmp/
+group_vars/all/secrets
+.env.private
+hosts/vagrant_ansible_inventory

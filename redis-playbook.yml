@@ -1,0 +1,7 @@
+---
+- name: LN-inf-redis
+  hosts: redis
+  user: root
+  sudo: yes
+  roles:
+    - redis
