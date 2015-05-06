@@ -1,8 +1,9 @@
 [redis]
-redis-master ansible_ssh_host=192.168.33.15
+redis-master ansible_ssh_host=192.168.33.14
 
 [app]
 app1 ansible_ssh_host=192.168.33.21
+app2 ansible_ssh_host=192.168.33.22
 
 [localhost]
 127.0.0.1       ansible_connection=local
