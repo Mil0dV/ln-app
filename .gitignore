@@ -4,3 +4,4 @@ Gemfile.lock
 .kitchen.local.yml
 ln-app-docker-tmp/
 group_vars/all/secrets
+.env.private

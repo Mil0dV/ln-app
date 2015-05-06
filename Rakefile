@@ -7,6 +7,7 @@ require 'cucumber/rake/task'
 require 'dotenv'
 
 Dotenv.load File.absolute_path('.env')
+Dotenv.load File.absolute_path('.env.private')
 
 properties = AnsibleSpec.get_properties
 # {"name"=>"Ansible-Sample-TDD", "hosts"=>["192.168.0.103","192.168.0.103"], "user"=>"root", "roles"=>["nginx", "mariadb"]}
