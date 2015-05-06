@@ -5,6 +5,7 @@ require 'yaml'
 require 'ansible_spec'
 require 'cucumber/rake/task'
 require 'dotenv'
+require 'pty'
 
 Dotenv.load File.absolute_path('.env')
 Dotenv.load File.absolute_path('.env.private')
@@ -41,6 +42,59 @@ namespace :serverspec do
   end
 end
 
-Cucumber::Rake::Task.new(:features) do |t|
+Cucumber::Rake::Task.new(:features, 'Runs Cucumber feature tests on dev stack, creates this if missing') do |t|
   t.cucumber_opts = "--format pretty" # Any valid command line option can go here.
+end
+
+namespace 'ln' do
+  desc 'Build new Docker image'
+  task :build do
+   pseudo_term('ansible-playbook -i hosts/dev build.yml')
+  end
+
+  desc 'Deploy new build to dev environment'
+  task :deploy_dev do
+    pseudo_term('ansible-playbook -i hosts/dev app-playbook.yml')
+  end
+
+  desc 'Deploy new build to production environment'
+  task :deploy_prod do
+    pseudo_term('ansible-playbook -i hosts/vagrant_ansible_inventory app-playbook.yml --extra-vars="prod=true"
+')
+  end
+
+  desc 'Create and provision dev stack'
+  task :create_dev_stack do
+   pseudo_term('vagrant up')
+   pseudo_term('ansible-playbook -i hosts/dev playbook.yml')
+  end
+
+  desc 'Create and provision production stack'
+  task :create_prod_stack do
+   pseudo_term('VAGRANT_VAGRANTFILE=Vagrantfile.prod vagrant up')
+   pseudo_term('ansible-playbook -i hosts/vagrant_ansible_inventory playbook.yml --extra-vars="prod=true"')
+  end
+
+  desc 'Destroy dev stack'
+  task :destroy_dev_stack do
+   pseudo_term('vagrant destroy -f')
+  end
+
+  desc 'Destroy production stack'
+  task :destroy_prod_stack do
+   pseudo_term('VAGRANT_VAGRANTFILE=Vagrantfile.prod vagrant destroy -f')
+  end
+end
+
+def pseudo_term(command)
+  begin
+    PTY.spawn( command ) do |stdout, stdin, pid|
+      begin
+        stdout.each { |line| print line }
+      rescue Errno::EIO
+      end
+    end
+  rescue PTY::ChildExited
+    puts "The child process exited!"
+  end
 end
