@@ -5,3 +5,4 @@ Gemfile.lock
 ln-app-docker-tmp/
 group_vars/all/secrets
 .env.private
+hosts/vagrant_ansible_inventory
