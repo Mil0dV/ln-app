@@ -12,6 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "digital_ocean"
 
   [
+    'lb1p',
     'app1p',
     'app2p',
     'redis-master-prod'
@@ -30,7 +31,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.inventory_dir='hosts/'
         ansible.groups = {
           'app' => ['app1p','app2p'],
-          'redis' => ['redis-master-prod']
+          'redis' => ['redis-master-prod'],
+          'lb' => ['lb1p']
         }
       end
     end

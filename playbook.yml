@@ -19,3 +19,9 @@
   roles:
     - docker
     - app
+
+- name: LN-inf-lb
+  hosts: lb
+  user: root
+  roles:
+    - lb

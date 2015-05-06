@@ -12,6 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
 
   {
+    'lb1'   => '192.168.33.11',
     'app1'   => '192.168.33.21',
     'app2'   => '192.168.33.22',
     'redis-master' => '192.168.33.14'

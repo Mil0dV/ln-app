@@ -1,0 +1,12 @@
+---
+- name: LN-inf-2.0
+  hosts: all
+  tasks:
+    - name: Load env vars
+      include_vars: env_vars/base.yml
+
+- name: LN-inf-lb
+  hosts: lb
+  user: root
+  roles:
+    - lb

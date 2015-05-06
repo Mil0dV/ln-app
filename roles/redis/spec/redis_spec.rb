@@ -1,10 +1,5 @@
 require 'spec_helper'
 
-# todo
-# describe package('redis') do
-#   it { should be_installed }
-# end
-
 describe service('redis') do
   it { should be_running   }
 end
@@ -15,6 +10,4 @@ end
 
 describe file('/etc/redis/6379.conf') do
   it { should be_file }
-  # todo
-  # it { should contain "worker_connections  1024;" }
 end
