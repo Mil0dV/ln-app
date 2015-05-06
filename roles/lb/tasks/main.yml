@@ -12,8 +12,3 @@
 - name: deploy haproxy config
   template: src=haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg
   notify: restart haproxy
-
-- name: create backend stats script
-  shell: >
-    echo 'echo "show stat" | sudo nc -U /var/lib/haproxy/stats | cut -d"," -f 1,18 | grep ln-app' \
-    > /usr/local/bin/haproxy_stats.sh && chmod +x /usr/local/bin/haproxy_stats.sh
