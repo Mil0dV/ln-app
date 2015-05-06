@@ -12,12 +12,20 @@ Install Ansible, Vagrant and Virtualbox via cli
 #{package_manager} install virtualbox
 ```
 (package names may vary depending on os)
+(minimal vagrant version 1.6.3)
 
 Install gemset  
-``bundle install``
+```
+gem install bundler
+bundle install
+```
+(requires build-essential or equivalent and ruby-dev)
 
 Create dev stack and run Cucumber features against them:  
-``rake features``
+```
+rake ln:create_dev_stack
+rake features
+```
 
 ####Additional dev stack features
 ```

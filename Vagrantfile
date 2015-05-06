@@ -10,12 +10,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   authorize_key_for_root config, '~/.ssh/id_dsa.pub', '~/.ssh/id_rsa.pub'
 
   config.vm.box = "ubuntu/trusty64"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 
   {
-    'lb1'   => '192.168.33.11',
-    'app1'   => '192.168.33.21',
-    'app2'   => '192.168.33.22',
-    'redis-master' => '192.168.33.14'
+    'redis-master'  => '192.168.33.14',
+    'app1'          => '192.168.33.21',
+    'app2'          => '192.168.33.22',
+    'lb1'           => '192.168.33.11'
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
       host.vm.network 'private_network', ip: ip
