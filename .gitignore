@@ -2,3 +2,4 @@ Gemfile.lock
 .vagrant/
 .kitchen/
 .kitchen.local.yml
+ln-app-docker-tmp/
