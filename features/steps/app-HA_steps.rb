@@ -16,6 +16,5 @@ end
 
 Then(/^I expect it to have active backends$/) do
   run_remote("#{ENV['LB']}", 'echo "show stat" | sudo nc -U /var/lib/haproxy/stats | cut -d"," -f 1,18 | grep ln-app')
-  # run_remote("#{ENV['APP_HOST']}", 'sh /usr/local/bin/haproxy_stats.sh')
   assert_passing_with('UP')
 end
