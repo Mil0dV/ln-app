@@ -11,20 +11,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "digital_ocean"
 
-  [
-    'lb1p',
-    'redis-master-prod'
-  ].each do |short_name|
-    config.vm.define short_name
-    #config.vm.short_name "redis-master-prod" do
-    #  provider.size = '512mb'
-    #end
-
-    (1..ENV['APP_NODES']).each do |i|
+  # App nodes config
+    (1..2).each do |i|
       config.vm.define "app#{i}p"
+      config.vm.provider :digital_ocean do |provider|
+        provider.size = '512mb'
+      end
+      config.vm.provision :vai do |ansible|
+        ansible.inventory_dir='hosts/'
+        ansible.groups = { 'app' => ['app#{i}p'] }
+      end
     end
 
+  # Redis node config
+    config.vm.define 'redis-master-prod'
+    config.vm.provider :digital_ocean do |provider|
+      provider.size = '512mb'
+    end
 
+    config.vm.define 'lb1p'
     config.vm.provider :digital_ocean do |provider, override|
       override.ssh.private_key_path = '~/.ssh/id_rsa'
       override.vm.box = 'digital_ocean'
@@ -38,10 +43,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.inventory_dir='hosts/'
         ansible.groups = {
           'app' => ['app1p','app2p'],
-          'redis' => ['redis-master-prod'],
+          'redis-master-prod' => ['redis-master-prod'],
           'lb' => ['lb1p']
         }
-      end
     end
   end
 end

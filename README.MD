@@ -29,6 +29,9 @@ rake ln:create_dev_stack
 rake features
 ```
 
+####What just happened?
+If all went well 4 VMs were created, one with redis, 2 with docker + a container running lamernews and a loadbalancer in front of it.
+
 ####Additional dev stack features
 ```
 rake ln:create_dev_stack      # Create and provision dev stack
@@ -57,7 +60,10 @@ rake ln:destroy_prod_stack    # Destroy production stack
 
 Lamersnews should now be up and running on the loadbalancers' public ip's:
 
-``grep lb1 hosts/*``
+``grep lb1p hosts/*``
+
+####Web scale!
+Should your site get a bit crowded and traffic-jammy, fear not, help is but a few keystrokes away! In Vagrantfile.prod you can set both the number and the size of the app nodes. Another ``rake ln:create_prod_stack`` and you're good. Redis can be scaled up here as well, for scaling out check the features/redis-ha branch.
 
 ####Vagrant
 
