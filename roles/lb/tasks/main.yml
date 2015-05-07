@@ -9,6 +9,13 @@
   lineinfile: dest=/etc/default/haproxy regexp="^ENABLED" line="ENABLED=1"
   notify: restart haproxy
 
+- name: Set LB frontend IP for dev
+  set_fact: lb_frontend_ip="{{ hostvars["lb1"]['ansible_eth1']['ipv4']['address']}}"
+  when: prod is not defined
+- name: Set LB frontend IP for prod
+  set_fact: lb_frontend_ip="{{ hostvars["lb1p"]['ansible_eth0']['ipv4']['address']}}"
+  when: prod is defined
+
 - name: deploy haproxy config
   template: src=haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg
   notify: restart haproxy
