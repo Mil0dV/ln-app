@@ -9,11 +9,11 @@
       set_fact: redismaster_ip="{{ hostvars["redis-master"].ansible_eth1.ipv4.address}}"
       when: prod is not defined
     - name: Collect DB Master IP for prod
-      set_fact: redismaster_ip="{{ hostvars["redis-master-prod"].ansible_eth1.ipv4.address}}"
+      set_fact: redismaster_ip="{{ hostvars["lb1p"].ansible_eth1.ipv4.address}}"
       when: prod is defined
 
 - name: LN-inf-redis
-  hosts: redis
+  hosts: redis-master-prod
   user: root
   roles:
     - redis

@@ -40,3 +40,24 @@ backend app
     {% for host in groups['app'] %}
         server {{ host }} {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} check port 80
     {% endfor %}
+
+defaults REDIS
+ mode tcp
+ timeout connect  4s
+ timeout server  30s
+ timeout client  30s
+
+frontend ft_redis
+ bind {{ lb_frontend_ip }}:6379 name redis
+ default_backend bk_redis
+
+backend bk_redis
+ option tcp-check
+ tcp-check send PINGrn
+ tcp-check expect string +PONG
+ tcp-check send info replicationrn
+ tcp-check expect string role:master
+ tcp-check send QUITrn
+ tcp-check expect string +OK
+ server R1 {{ hostvars["redis-master"].ansible_eth1.ipv4.address}}:6379 check inter 1s
+ server R2 {{ hostvars["redis-slave"].ansible_eth1.ipv4.address}}:6379 check inter 1s
