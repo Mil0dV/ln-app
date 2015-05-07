@@ -1,7 +1,23 @@
 ---
-- name: LN-inf-redis
-  hosts: redis
+- name: LN-inf-redis-master
+  hosts: redis-master
   user: root
-  sudo: yes
+  roles:
+    - redis
+
+- name: LN-inf-redis-slave
+  hosts: redis-slave
+  user: root
+  tasks:
+    - name: Collect DB Master IP for dev
+      set_fact: redismaster_ip="{{ hostvars["redis-master"].ansible_eth1.ipv4.address}}"
+      when: prod is not defined
+    - name: Collect DB Master IP for prod
+      set_fact: redismaster_ip="{{ hostvars["redis-master-prod"].ansible_eth1.ipv4.address}}"
+      when: prod is defined
+
+  vars:
+    # - redis_slaveof: "{{ redismaster_ip }} 6379"
+    - redis_slaveof: 192.168.33.14 6379
   roles:
     - redis
