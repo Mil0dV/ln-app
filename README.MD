@@ -65,11 +65,10 @@ Both environments are also usuable via vagrant, e.g.:
 ```
 vagrant up app1
 vagrant ssh app1
+VAGRANT_VAGRANTFILE=Vagrantfile.prod vagrant ssh app1p
 ```
 
-Hostnames are in hosts/dev and the dynamically generated hosts/vagrant_ansible_inventory. You can also ssh into the nodes:
-
-``$ ssh root@#{node_ip}``
+Hostnames are in hosts/dev and the dynamically generated hosts/vagrant_ansible_inventory. Direct root ssh access is also setup for your public key (for this demo usability > security).
 
 ####Aditional testing (serverspec)
 Besides Cucumber there are also ServerSpecs implemented via ansible_spec. These can be run as follows:
