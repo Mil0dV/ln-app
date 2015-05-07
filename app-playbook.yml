@@ -1,6 +1,7 @@
 ---
 - name: LN-inf-2.0
   hosts: all
+  user: root
   tasks:
     - name: Load env vars
       include_vars: env_vars/base.yml

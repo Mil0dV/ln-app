@@ -66,12 +66,14 @@ namespace 'ln' do
   desc 'Create and provision dev stack'
   task :create_dev_stack do
    pseudo_term('vagrant up')
+   system('for h in `grep ssh hosts/dev | cut -d"=" -f2`; do ssh-keyscan $h >> ~/.ssh/known_hosts; done')
    pseudo_term('ansible-playbook -i hosts/dev playbook.yml')
   end
 
   desc 'Create and provision production stack'
   task :create_prod_stack do
    pseudo_term('VAGRANT_VAGRANTFILE=Vagrantfile.prod vagrant up')
+   system('for h in `grep ssh hosts/vagrant_ansible_inventory | cut -d"=" -f2`; do ssh-keyscan $h >> ~/.ssh/known_hosts; done')
    pseudo_term('ansible-playbook -i hosts/vagrant_ansible_inventory playbook.yml --extra-vars="prod=true"')
   end
 
