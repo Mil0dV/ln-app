@@ -12,8 +12,9 @@ Install Ansible, Vagrant and Virtualbox via cli
 #{package_manager} install vagrant  
 #{package_manager} install virtualbox
 ```
-(package names may vary depending on os)
-(minimal vagrant version 1.6.3)
+(package names may vary depending on os)  
+(minimal vagrant version ~1.6.3)  
+
 ---
 
 Install gemset  
@@ -89,6 +90,7 @@ Loadbalancer tests:
 ####Updating the app
 *prerequisites*
 Docker locally or via boot2docker
+
 ---
 
 Updates are performed by first building a new docker image, for which you'l need to:  
