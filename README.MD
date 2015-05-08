@@ -4,7 +4,7 @@ This project aims to build an infrastructure for [lamernews](https://github.com/
 
 ####Gotta go fast!
 
-*prerequisites*
+*prerequisites*  
 Install Ansible, Vagrant and Virtualbox via cli
 
 ```
@@ -15,8 +15,7 @@ Install Ansible, Vagrant and Virtualbox via cli
 (package names may vary depending on os)  
 (minimal vagrant version ~1.6.3)  
 
----
-
+*let's get going*  
 Install gemset  
 ```
 gem install bundler
@@ -88,11 +87,10 @@ Loadbalancer tests:
 ``rake serverspec:LN-inf-lb``  
 
 ####Updating the app
-*prerequisites*
+*prerequisites*  
 Docker locally or via boot2docker
 
----
-
+*build time*  
 Updates are performed by first building a new docker image, for which you'l need to:  
 ``docker login``  
 (requires dockerhub account)  
